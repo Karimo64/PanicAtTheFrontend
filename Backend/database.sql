@@ -29,6 +29,7 @@ CREATE TABLE DonorProduct(
     product_quantity FLOAT,
     product_unit CHAR(25),
     
+    PRIMARY KEY(donor_id),
     FOREIGN KEY(donor_id) REFERENCES Donor(donor_id),
     FOREIGN KEY(product_id) REFERENCES Product(product_id)
 );
@@ -38,6 +39,7 @@ CREATE TABLE DonorMail(
 	donor_id INT NOT NULL,
     donor_mail CHAR(100),
     
+    PRIMARY KEY(donor_id),
     FOREIGN KEY(donor_id) REFERENCES Donor(donor_id)
 );
 DROP TABLE IF EXISTS DonorMail;
@@ -46,6 +48,19 @@ CREATE TABLE DonorPhone(
 	donor_id INT NOT NULL,
     donor_phone CHAR(15),
     
+    PRIMARY KEY(donor_id),
     FOREIGN KEY(donor_id) REFERENCES Donor(donor_id)
 );
 DROP TABLE IF EXISTS DonorPhone;
+
+-- Demo database
+SELECT * FROM Donor;
+SELECT * FROM Product;
+SELECT * FROM DonorProduct;
+SELECT * FROM DonorPhone;
+SELECT * FROM DonorMail;
+
+INSERT INTO Donor(`donor_name`, `donor_localization`, `donor_organization`, `donor_type`) VALUES ('Óscar Bahena', 'Cuautla', 'Agroparque', 'Recurrente');
+INSERT INTO Donor(`donor_name`, `donor_localization`, `donor_organization`, `donor_type`) VALUES ('Rosendo Santa María', 'Yautepec', 'Productor de jitomate', 'Recurrente');
+INSERT INTO Donor(`donor_name`, `donor_localization`, `donor_organization`, `donor_type`) VALUES ('Alejandra Díaz', 'Cuautla', 'Catania', 'Por temporada');
+INSERT INTO Donor(`donor_name`, `donor_localization`, `donor_organization`) VALUES ('Fernando Pimentel', 'Cuautla', 'Productor de ejote');

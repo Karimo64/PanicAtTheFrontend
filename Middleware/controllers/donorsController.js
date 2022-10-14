@@ -26,7 +26,7 @@ module.exports.get_donor = (request, response) => {
 
 module.exports.add_donor = (request, response) => {
   console.log(request.body)
-  let name = request.query.name
+  let name = request.query.name   //Delete unnecessary variables
   let loc = request.query.localization
   let org = request.query.organization
   let type = request.query.type
@@ -50,8 +50,8 @@ module.exports.delete_donor = (request, response) => {
 }
 
 module.exports.update_donor = (request, response) => {
-let sql = "UPDATE * FROM Donor Where donor_id = ?"
-connection.query(sql, [request.params.id], (error, results, fields) => {
+let sql = "UPDATE Donor SET donor_name = ?, donor_localization = ?, donor_organization = ?, donor_type = ? WHERE donor_id = ?"
+connection.query(sql, [request.query.name, request.query.localization, request.query.organization, request.query.type, request.params.id], (error, results, fields) => {
   if(error) {
     response.send(error)
   }

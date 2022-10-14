@@ -25,10 +25,11 @@ module.exports.get_donor = (request, response) => {
 }
 
 module.exports.add_donor = (request, response) => {
-  let name = request.body.name
-  let loc = request.body.localization
-  let org = request.body.organization
-  let type = request.body.type
+  console.log(request.body)
+  let name = request.query.name
+  let loc = request.query.localization
+  let org = request.query.organization
+  let type = request.query.type
   let sql = "CALL CreateDonor(?, ?, ?, ?)"
   connection.query(sql, [name, loc, org, type], (error, results, fields) => {
     if(error) {

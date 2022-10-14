@@ -38,3 +38,23 @@ module.exports.add_donor = (request, response) => {
     response.json(results)
   })
 }
+
+module.exports.delete_donor = (request, response) => {
+  let sql = "DELETE FROM Donor Where donor_id = ?"
+  connection.query(sql, [request.params.id], (error, results, fields) => {
+    if(error) {
+      response.send(error)
+    }
+    response.json(results)
+  })
+}
+
+module.exports.update_donor = (request, response) => {
+let sql = "UPDATE * FROM Donor Where donor_id = ?"
+connection.query(sql, [request.params.id], (error, results, fields) => {
+  if(error) {
+    response.send(error)
+  }
+  response.json(results)
+})
+}

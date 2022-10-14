@@ -4,6 +4,7 @@ let mysql = require('mysql')
 let config = require('../helpers/config') //Import
 let connection = mysql.createConnection(config)
 
+//Get all donors
 module.exports.get_donors = (request, response) => {
   let sql = "SELECT * FROM Donor"
   connection.query(sql, (error, results, fields) => {
@@ -14,6 +15,7 @@ module.exports.get_donors = (request, response) => {
   })
 }
 
+//Get a specific donor
 module.exports.get_donor = (request, response) => {
   let sql = "SELECT * FROM Donor WHERE donor_id = ?"
   connection.query(sql, [request.params.id] ,(error, results, fields) => {
@@ -24,14 +26,11 @@ module.exports.get_donor = (request, response) => {
   })
 }
 
+//Add a new donor
 module.exports.add_donor = (request, response) => {
   console.log(request.body)
-  let name = request.query.name   //Delete unnecessary variables
-  let loc = request.query.localization
-  let org = request.query.organization
-  let type = request.query.type
   let sql = "CALL CreateDonor(?, ?, ?, ?)"
-  connection.query(sql, [name, loc, org, type], (error, results, fields) => {
+  connection.query(sql, [request.query.name, request.query.localization, request.query.organization, request.query.type], (error, results, fields) => {
     if(error) {
       response.send(error)
     }
@@ -39,6 +38,7 @@ module.exports.add_donor = (request, response) => {
   })
 }
 
+//Delete a specific donor
 module.exports.delete_donor = (request, response) => {
   let sql = "DELETE FROM Donor Where donor_id = ?"
   connection.query(sql, [request.params.id], (error, results, fields) => {

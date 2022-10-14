@@ -9,6 +9,9 @@ let app = express()
 
 let donors = require('./routes/donors')
 
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: false}))
+
 app.use('/', donors)
 
 app.listen(port, () => {

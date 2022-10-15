@@ -15,8 +15,35 @@ module.exports.get_phones = (request, response) => {
     })
 }
 
-//Get phone(s) of a specific donor
+//Add phone for a donor
+module.exports.add_phone = (request, response) => {
+    let sql = "CALL AddPhoneToDonor(?, ?)"
+    connection.query(sql, [request.params.id, request.query.phone], (error, results, fields) => {
+        if(error) {
+            response.send(error)
+        }
+        response.json(results)
+    })
+}
 
-//Update phone
+//Delete specific phone for a donor
+module.exports.delete_phone = (request, response) => {
+    let sql = "DELETE FROM DonorPhone WHERE phone_id = ?"
+    connection.query(sql, [request.params.phone_id], (error, results, fields) => {
+        if(error) {
+            response.send(error)
+        }
+        response.json(results)
+    })
+}
 
-//Delete phone
+//Update specific phone for a donor
+module.exports.update_phone = (request, response) => {
+    let sql = "UPDATE DonorPhone SET donor_phone = ? WHERE phone_id = ?"
+    connection.query(sql, [request.query.phone, request.params.phone_id], (error, results, fields) => {
+        if(error) {
+            response.send(error)
+        }
+        response.json(results)
+    })
+}

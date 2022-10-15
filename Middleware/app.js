@@ -21,5 +21,5 @@ app.use('/', donors)
 app.use('/phone', phones)
 
 app.listen(port, () => {
-  console.log("Server started in port ${port}")
+  console.log(`Server started in port ${port}`)
 })

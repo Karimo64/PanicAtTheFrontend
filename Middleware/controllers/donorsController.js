@@ -28,9 +28,10 @@ module.exports.get_donor = (request, response) => {
 
 //Add a new donor
 module.exports.add_donor = (request, response) => {
-  console.log(request.body)
   let sql = "CALL CreateDonor(?, ?, ?, ?)"
-  connection.query(sql, [request.query.name, request.query.localization, request.query.organization, request.query.type], (error, results, fields) => {
+  connection.query(sql, 
+    [request.query.name, request.query.city, request.query.colony, request.query.organization, request.query.type, request.type.website],
+    (error, results, fields) => {
     if(error) {
       response.send(error)
     }
@@ -40,7 +41,7 @@ module.exports.add_donor = (request, response) => {
 
 //Delete a specific donor
 module.exports.delete_donor = (request, response) => {
-  let sql = "DELETE FROM Donor Where donor_id = ?"
+  let sql = "CALL DeleteDonor(?)"
   connection.query(sql, [request.params.id], (error, results, fields) => {
     if(error) {
       response.send(error)
@@ -49,12 +50,14 @@ module.exports.delete_donor = (request, response) => {
   })
 }
 
+//Update a specific donor
 module.exports.update_donor = (request, response) => {
-let sql = "UPDATE Donor SET donor_name = ?, donor_localization = ?, donor_organization = ?, donor_type = ? WHERE donor_id = ?"
-connection.query(sql, [request.query.name, request.query.localization, request.query.organization, request.query.type, request.params.id], (error, results, fields) => {
-  if(error) {
-    response.send(error)
-  }
-  response.json(results)
-})
+  let sql = "UPDATE Donor SET donor_name = ?, donor_city = ?, donor_colony = ?, donor_organization = ?, donor_type = ?, donor_website = ? WHERE donor_id = ?"
+  connection.query(sql,
+    [request.query.name, request.query.city, request.query.colony, request.query.organization, request.query.type, request.query.website, request.params.id], (error, results, fields) => {
+    if(error) {
+      response.send(error)
+    }
+    response.json(results)
+  })
 }

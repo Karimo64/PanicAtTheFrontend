@@ -1,4 +1,4 @@
--- "BAMX" database v2.0.0
+-- "BAMX" database v2.2.0
 DROP DATABASE IF EXISTS BAMX;
 CREATE DATABASE BAMX;
 USE BAMX;
@@ -149,3 +149,27 @@ BEGIN
 	INSERT INTO DonorProduct VALUES(null, donor_id, product_name, donation_date, donation_observation, product_quantity, product_unit);
 END //
 DELIMITER ;
+
+-- Delete donor from all tables
+DROP PROCEDURE DeleteDonor
+DELIMITER //
+CREATE PROCEDURE DeleteDonor(
+	donor_id INT
+)
+BEGIN
+	IF EXISTS (SELECT * FROM DonorPhone WHERE DonorPhone.donor_id = donor_id) THEN
+		DELETE FROM DonorPhone WHERE DonorPhone.donor_id = donor_id;
+	END IF;
+	IF EXISTS (SELECT * FROM DonorMail WHERE DonorMail.donor_id = donor_id) THEN
+		DELETE FROM DonorMail WHERE DonorMail.donor_id = donor_id;
+	END IF;
+    IF EXISTS (SELECT * FROM DonorProduct WHERE DonorProduct.donor_id = donor_id) THEN
+		DELETE FROM DonorProduct WHERE DonorProduct.donor_id = donor_id;
+    END IF;
+	DELETE FROM Donor WHERE Donor.donor_id = donor_id;
+END //
+DELIMITER ;
+
+SELECT * FROM Donor;
+SELECT * FROM DonorPhone;
+SELECT * FROM DonorMail;

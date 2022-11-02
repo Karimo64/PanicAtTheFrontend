@@ -5,7 +5,7 @@ let config = require('../helpers/config') //Import
 let connection = mysql.createConnection(config)
 
 //Get all products for a specific donor
-module.exports.get_phroducts = (request, response) => {
+module.exports.get_products = (request, response) => {
     let sql = "SELECT * FROM DonorProduct WHERE donor_id = ?"
     connection.query(sql, [request.params.id], (error, results, fields) => {
         if(error) {

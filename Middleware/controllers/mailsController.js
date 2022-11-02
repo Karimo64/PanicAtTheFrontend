@@ -4,6 +4,10 @@ let mysql = require('mysql')
 let config = require('../helpers/config') //Import
 let connection = mysql.createConnection(config)
 
+
+//Get all donor mails
+
+
 //Get all mails for a specific donor
 module.exports.get_mails = (request, response) => {
     let sql = "SELECT * FROM DonorMail WHERE donor_id = ?"

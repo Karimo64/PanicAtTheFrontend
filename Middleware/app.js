@@ -12,6 +12,7 @@ let donations = require('./routes/donations')
 let mails = require('./routes/mails')
 let products = require('./routes/products')
 let units = require('./routes/units')
+let phones = require('./routes/phones')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
@@ -21,8 +22,8 @@ app.use('/', donors)
 app.use('/mail', mails)
 app.use('/product', products)
 app.use('/unit', units)
+app.use('/phone', phones)
 
 app.listen(port, () => {
-  console.log("Server started in port ${port}")
-
+  console.log(`Server started in port ${port}`)
 })

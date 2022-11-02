@@ -1,4 +1,5 @@
--- "BAMX" database v2.0.0
+-- "BAMX" database v2.2.0
+DROP DATABASE IF EXISTS BAMX;
 CREATE DATABASE BAMX;
 USE BAMX;
 
@@ -6,9 +7,11 @@ DROP TABLE IF EXISTS Donor;
 CREATE TABLE Donor(
 	donor_id INT NOT NULL AUTO_INCREMENT,
 	donor_name CHAR(50),
-    donor_localization CHAR(50),
-    donor_organization CHAR(200),
+    donor_city CHAR(50),
+    donor_colony CHAR(50),
+    donor_organization CHAR(100),
     donor_type CHAR(100),
+    donor_website CHAR(50),
     
     PRIMARY KEY(donor_id)
 );
@@ -23,6 +26,7 @@ CREATE TABLE Product(
 
 DROP TABLE IF EXISTS DonorProduct;
 CREATE TABLE DonorProduct(
+	donation_id INT NOT NULL AUTO_INCREMENT,
 	donor_id INT NOT NULL,
     product_id INT NOT NULL,
     donation_date TIMESTAMP,
@@ -30,26 +34,28 @@ CREATE TABLE DonorProduct(
     product_quantity FLOAT,
     product_unit CHAR(25),
     
-    PRIMARY KEY(donor_id),
+    PRIMARY KEY(donation_id),
     FOREIGN KEY(donor_id) REFERENCES Donor(donor_id),
     FOREIGN KEY(product_id) REFERENCES Product(product_id)
 );
 
 DROP TABLE IF EXISTS DonorMail;
 CREATE TABLE DonorMail(
+	mail_id INT NOT NULL AUTO_INCREMENT,
 	donor_id INT NOT NULL,
     donor_mail CHAR(100),
     
-    PRIMARY KEY(donor_id),
+    PRIMARY KEY(mail_id),
     FOREIGN KEY(donor_id) REFERENCES Donor(donor_id)
 );
 
 DROP TABLE IF EXISTS DonorPhone;
 CREATE TABLE DonorPhone(
+	phone_id INT NOT NULL AUTO_INCREMENT,
 	donor_id INT NOT NULL,
     donor_phone CHAR(15),
     
-    PRIMARY KEY(donor_id),
+    PRIMARY KEY(phone_id),
     FOREIGN KEY(donor_id) REFERENCES Donor(donor_id)
 );
 
@@ -59,6 +65,7 @@ CREATE TABLE Unit(
     
     PRIMARY KEY(unit_name)
 );
+
 -- CRUD Procedures
 
 -- Create a donor
@@ -66,12 +73,14 @@ DROP PROCEDURE CreateDonor
 DELIMITER //
 CREATE PROCEDURE CreateDonor (
 	donor_name CHAR(50),
-    donor_localization CHAR(50),
-    donor_organization CHAR(200),
-    donor_type CHAR(100)
+    donor_city CHAR(50),
+    donor_colony CHAR(50),
+    donor_organization CHAR(100),
+    donor_type CHAR(100),
+    donor_website CHAR(50)
 )
 BEGIN
-	INSERT INTO Donor VALUES(null, donor_name, donor_localization, donor_organization, donor_type);
+	INSERT INTO Donor VALUES(null, donor_name, donor_city, donor_colony, donor_organization, donor_type, donor_website);
 END //
 DELIMITER ;
 
@@ -83,7 +92,7 @@ CREATE PROCEDURE AddPhoneToDonor(
 	donor_phone CHAR(15)
 )
 BEGIN
-	INSERT INTO DonorPhone VALUES(donor_id, donor_phone);
+	INSERT INTO DonorPhone VALUES(null, donor_id, donor_phone);
 END //
 DELIMITER ;
 
@@ -94,7 +103,7 @@ CREATE PROCEDURE AddMailToDonor(
     donor_mail CHAR(100)
 )
 BEGIN
-	INSERT INTO DonorMail VALUES(donor_id, donor_mail);
+	INSERT INTO DonorMail VALUES(null, donor_id, donor_mail);
 END //
 DELIMITER ;
 
@@ -106,7 +115,7 @@ CREATE PROCEDURE AddProductForDonation(
 )
 BEGIN
 	
-	IF NOT EXISTS (SELECT product_name FROM Product WHERE product_name = new_product_name) THEN
+	IF NOT EXISTS (SELECT product_name FROM Product WHERE product_name = LOWER(new_product_name)) THEN
 		INSERT INTO Product VALUES (null, LOWER(new_product_name));
 	END IF;
 END //
@@ -137,6 +146,30 @@ CREATE PROCEDURE AddDonationToDonor(
     product_unit CHAR(25)
 )
 BEGIN
-	INSERT INTO DonorProduct VALUES(donor_id, product_name, donation_date, donation_observation, product_quantity, product_unit);
+	INSERT INTO DonorProduct VALUES(null, donor_id, product_name, donation_date, donation_observation, product_quantity, product_unit);
 END //
 DELIMITER ;
+
+-- Delete donor from all tables
+DROP PROCEDURE DeleteDonor
+DELIMITER //
+CREATE PROCEDURE DeleteDonor(
+	donor_id INT
+)
+BEGIN
+	IF EXISTS (SELECT * FROM DonorPhone WHERE DonorPhone.donor_id = donor_id) THEN
+		DELETE FROM DonorPhone WHERE DonorPhone.donor_id = donor_id;
+	END IF;
+	IF EXISTS (SELECT * FROM DonorMail WHERE DonorMail.donor_id = donor_id) THEN
+		DELETE FROM DonorMail WHERE DonorMail.donor_id = donor_id;
+	END IF;
+    IF EXISTS (SELECT * FROM DonorProduct WHERE DonorProduct.donor_id = donor_id) THEN
+		DELETE FROM DonorProduct WHERE DonorProduct.donor_id = donor_id;
+    END IF;
+	DELETE FROM Donor WHERE Donor.donor_id = donor_id;
+END //
+DELIMITER ;
+
+SELECT * FROM Donor;
+SELECT * FROM DonorPhone;
+SELECT * FROM DonorMail;

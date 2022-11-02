@@ -8,16 +8,20 @@ let port = 3000
 let app = express()
 
 let donors = require('./routes/donors')
-let phones = require('./routes/phones')
+let donations = require('./routes/donations')
 let mails = require('./routes/mails')
 let products = require('./routes/products')
 let units = require('./routes/units')
-let donations = require('./routes/donations')
+let phones = require('./routes/phones')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 
+app.use('/donation', donations)
 app.use('/', donors)
+app.use('/mail', mails)
+app.use('/product', products)
+app.use('/unit', units)
 app.use('/phone', phones)
 
 app.listen(port, () => {

@@ -3,6 +3,7 @@
 let express = require('express')
 let path = require('path')
 let bodyParser = require('body-parser')
+let cors = require('cors')
 
 let port = 3000
 let app = express()
@@ -16,6 +17,7 @@ let phones = require('./routes/phones')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
+app.use(cors())
 
 app.use('/donation', donations)
 app.use('/', donors)

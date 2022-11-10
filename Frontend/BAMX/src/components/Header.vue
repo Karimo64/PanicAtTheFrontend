@@ -22,10 +22,7 @@
         </div>
         <div class="col-lg-8">
           <div class="site-logo d-flex justify-content-end">
-            <img src="../assets/bamx-logo.png" width="100" height="45"/>
-          </div>
-          <div class="ml-auto toggle-button d-inline-block d-lg-none">
-            <a href="#" class="site-menu-toggle py-5 js-menu-toggle text-black"></a>
+            <router-link to="/"><img src="../assets/bamx-logo.png" width="100" height="45"/></router-link>
           </div>
         </div>
       </div>

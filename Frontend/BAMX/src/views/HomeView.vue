@@ -1,5 +1,4 @@
 <script setup>
-// import TheWelcome from '../components/TheWelcome.vue'
 import Donor from '../components/Donor.vue'
 </script>
 

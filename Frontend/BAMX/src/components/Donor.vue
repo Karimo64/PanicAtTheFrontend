@@ -21,6 +21,25 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    deleteAlert(){
+      this.$swal({
+        title: '¿Estas segur@?',
+        text: "No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, bórralo!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$swal(
+            '¡Borrado!',
+            'El registro ha sido borrado.',
+            'success'
+          )
+        }
+      })
     }
   }
 }
@@ -36,8 +55,12 @@ export default {
     <td>{{ donor.donor_type }}</td>
     <td>{{ donor.donor_website }}</td>
     <td>
-      <button><img src="../assets/pencil.png" width="16" height="16"/></button>
-      <button><img src="../assets/trash.png" width="16" height="16"/></button>
+      <router-link :to="{name: 'edit', params:{id: donor.donor_id}}">
+        <button class="btn update" v-bind:id="donor.donor_id"><img src="../assets/pencil.png" title="editImage" width="16" height="16"/></button>
+      </router-link>
+    </td>
+    <td>
+      <button class="btn delete" v-bind:id="donor.donor_id" @click="deleteAlert()"><img src="../assets/trash.png" title="deleteImage" width="16" height="16"/></button>
     </td>
   </tr>
 </template>
@@ -45,5 +68,14 @@ export default {
 <style>
 tr {
   text-align: center;
+}
+button{
+  padding: 8px 10px !important;
+}
+button:hover.update {
+  background-color: rgba(0, 0, 200, 0.25) !important;
+}
+button:hover.delete {
+  background-color:rgba(239, 12, 12, 0.25) !important;
 }
 </style>

@@ -31,5 +31,6 @@ import Donor from '../components/Donor.vue'
 h1{
   text-align: center;
   padding: 10px 0;
+  font-style: italic;
 }
 </style>

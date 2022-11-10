@@ -35,6 +35,10 @@ export default {
     <td>{{ donor.donor_organization }}</td>
     <td>{{ donor.donor_type }}</td>
     <td>{{ donor.donor_website }}</td>
+    <td>
+      <button><img src="../assets/pencil.png" width="16" height="16"/></button>
+      <button><img src="../assets/trash.png" width="16" height="16"/></button>
+    </td>
   </tr>
 </template>
 

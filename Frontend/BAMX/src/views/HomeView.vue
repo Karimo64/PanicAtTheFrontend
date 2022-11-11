@@ -11,10 +11,9 @@ import Donor from '../components/Donor.vue'
           <tr>
             <th>Id</th>
             <th>Nombre</th>
-            <th>Localizaci&oacute;n</th>
+            <th>Ciudad</th>
             <th>Organizaci&oacute;n/Gremio</th>
             <th>Tipo de aliado</th>
-            <th>Tel&eacute;fono</th>
             <th>Correo electr&oacute;nico</th>
           </tr>
         </thead>

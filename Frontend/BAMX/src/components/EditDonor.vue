@@ -1,6 +1,10 @@
 <script>
 import axios from 'axios'
 import Phone from './Phone.vue'
+import municipios_data from '../assets/municipios.json'
+import { DropDownListPlugin } from "@syncfusion/ej2-vue-dropdowns";
+import Vue from 'vue';
+Vue.use(DropDownListPlugin);
 
 export default {
   name: 'Donors',
@@ -13,12 +17,15 @@ export default {
   data() {
     return {
       donors: {},
-      phones: {}
+      phones: {},
+      municipios: {},
+      estados: {}
     }
   },
   mounted() {
     this.getDonor()
     this.getPhones()
+    this.getEstados()
   },
   methods: {
     deletePhone(idPhone){
@@ -54,6 +61,12 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    getEstados(){
+     
+    },
+    getMunicipios(estado){
+
     },
     deleteAlert(id){
       event.preventDefault() // prevent form submit
@@ -142,18 +155,6 @@ export default {
         <div v-for="donor in donors" :key="donor.donor_id">
           <Phone :idDonor=donor.donor_id />
         </div>
-        <!-- <form class="limited-form" method="post">
-          <div v-for= "(phone, index) in phones" :key="phone.phone_id">
-            <label for="phone" class="form-label">Tel&eacute;fono {{index + 1}}</label>
-            <div class="input-group">
-              <input class="form-control mb-3" type="text" name="phone" id="phone" :value="phone.donor_phone">
-              <button class="btn btn-outline-secondary delete-form" type="button" name="id" :id="phone.phone_id" @click="deleteAlert(phone.phone_id)"><img src="../assets/trash.png" title="deleteImage" width="16" height="16"/></button>
-            </div>
-          </div>
-          <div class="d-grid">
-            <button type="button" class="btn btn-outline-success d-inline-block" data-bs-toggle="modal" data-bs-target="#exampleModal">+</button>
-          </div>
-        </form> -->
       </div>
     </div>
     <div class="row d-flex">
@@ -182,7 +183,9 @@ export default {
           </router-link>       
         </div>
       </div>
-    <div class="row"></div>
+    <div class="row">
+      <ejs-dropdownlist id='dropdownlist' placeholder='Select a game' :dataSource='municipios_data' ></ejs-dropdownlist>
+    </div>
   </div>
 
 
@@ -191,17 +194,5 @@ export default {
 </template>
 
 <style>
-/* .limited-form{
-  min-height: 340px;
-  max-height: 340px;
-  overflow-y: scroll;
-  padding: 0 20px;
-} */
-/* .delete-form{
-  padding: 2px 10px !important;
-  height: 38px;
-}
-button:hover.delete-form{
-  background-color:rgba(239, 12, 12, 0.25) !important;
-} */
+
 </style>

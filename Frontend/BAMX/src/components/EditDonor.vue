@@ -35,6 +35,12 @@ export default {
         console.log(error)
       }
     },
+    getEstados(){
+     
+    },
+    getMunicipios(estado){
+
+    },
     deleteAlert(id){
       event.preventDefault() // prevent form submit
       this.$swal({
@@ -172,7 +178,9 @@ export default {
           </router-link>       
         </div>
       </div>
-    <div class="row"></div>
+    <div class="row">
+      <ejs-dropdownlist id='dropdownlist' placeholder='Select a game' :dataSource='municipios_data' ></ejs-dropdownlist>
+    </div>
   </div>
 
 
@@ -181,17 +189,5 @@ export default {
 </template>
 
 <style>
-/* .limited-form{
-  min-height: 340px;
-  max-height: 340px;
-  overflow-y: scroll;
-  padding: 0 20px;
-} */
-/* .delete-form{
-  padding: 2px 10px !important;
-  height: 38px;
-}
-button:hover.delete-form{
-  background-color:rgba(239, 12, 12, 0.25) !important;
-} */
+
 </style>

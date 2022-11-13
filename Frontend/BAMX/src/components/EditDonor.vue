@@ -2,6 +2,7 @@
 import axios from 'axios'
 import Phone from './Phone.vue'
 import municipios_data from '../assets/estados_municipios.json'
+import Town from './Town.vue'
 
 export default {
   name: 'Donors',
@@ -84,7 +85,8 @@ export default {
     }
   },
   components: {
-    Phone
+    Phone,
+    Town
 }
 }
 </script>
@@ -169,6 +171,9 @@ export default {
       </li>
     </ul> -->
 
+    <div class="row">
+      <Town />
+    </div>
     
     <div class="row">
         <div class="text-center">

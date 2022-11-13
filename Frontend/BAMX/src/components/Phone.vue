@@ -5,7 +5,7 @@ export default{
   name: 'Phone',
   props: {
     idDonor: {
-      type: String,
+      type: Number,
       required: true
     }
   },
@@ -18,6 +18,23 @@ export default{
     this.getPhones()
   },
   methods: {
+    validate: function(event){
+      var theEvent = event || window.event;
+
+      // Handle paste
+      if (theEvent.type === 'paste') {
+          key = event.clipboardData.getData('text/plain');
+      } else {
+      // Handle key press
+          var key = theEvent.keyCode || theEvent.which;
+          key = String.fromCharCode(key);
+      }
+      var regex = /[0-9]/;
+      if( !regex.test(key) ) {
+        theEvent.returnValue = false;
+        if(theEvent.preventDefault) theEvent.preventDefault();
+      }
+    },
     deletePhone(idPhone){
       try {
         axios.delete('http://localhost:3000/phone/' + idPhone)
@@ -33,7 +50,7 @@ export default{
         axios.get('http://localhost:3000/phone/' + this.idDonor)
         .then(response => {
           this.phones = response.data
-          console.log(this.phones)
+          // console.log(this.phones)
           // console.log(this.idDonor)
         })
       } catch (error) {
@@ -66,6 +83,48 @@ export default{
                   this.$swal("¡Cancelado!", "El registro no ha sido borrado.", "error");
             });
     },
+    addAlert(){
+      var phone = document.getElementById('addPhoneNumber').value
+      this.$swal({
+        title: 'Agregar numero',
+        text: '¿Desea agregar el numero ' + phone + ' a este donador?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.addPhone()
+          this.$swal({
+            title: "¡Agregado!",
+            text: "El registro ha sido agregado.",
+            icon: "success"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              location.reload()
+            }
+          })
+        }else
+          this.$swal("¡Cancelado!", "El registro no ha sido agregado.", "error");
+      })
+
+    },
+    addPhone(){
+      event.preventDefault() // prevent form submit
+      try {
+            axios.post('http://localhost:3000/phone/' + this.idDonor, {
+              id: this.idDonor,
+              phone: document.getElementById('addPhoneNumber').value
+            })
+            .then(response => {
+              console.log(response)
+            })
+          } catch (error) {
+            console.log(error)
+          }
+      console.log(phone)
+    }
 
   }
 }
@@ -76,14 +135,40 @@ export default{
     <div v-for= "(phone, index) in phones" :key="phone.phone_id">
       <label for="phone" class="form-label">Tel&eacute;fono {{index + 1}}</label>
       <div class="input-group">
-        <input class="form-control mb-3" type="text" name="phone" id="phone" :value="phone.donor_phone">
+        <input class="form-control mb-3" type="text" @keypress="validate($event)" maxlength="10" name="phone" id="phone" :value="phone.donor_phone">
         <button class="btn btn-outline-secondary delete-form" type="button" name="id" :id="phone.phone_id" @click="deleteAlert(phone.phone_id)"><img src="../assets/trash.png" title="deleteImage" width="16" height="16"/></button>
       </div>
     </div>
     <div class="d-grid">
-      <button type="button" class="btn btn-outline-success d-inline-block" data-bs-toggle="modal" data-bs-target="#exampleModal">+</button>
+      <button type="button" class="btn btn-outline-success d-inline-block" data-bs-toggle="modal" data-bs-target="#addPhone">+</button>
     </div>
   </form>
+
+
+<!-- Modal -->
+<div class="modal fade" id="addPhone" tabindex="-1" aria-labelledby="addPhoneLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addPhoneLabel">Agregar tel&eacute;fono</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="">
+          <div class="mb-3">
+            <label for="phone" class="form-label">Tel&eacute;fono</label>
+            <input type="text" @keypress="validate($event)" maxlength="10" class="form-control" id="addPhoneNumber" name="phone" placeholder="Tel&eacute;fono">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" @click="addAlert()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </template>
 
 <style>

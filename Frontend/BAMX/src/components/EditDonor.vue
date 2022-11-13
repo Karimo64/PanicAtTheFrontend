@@ -1,6 +1,7 @@
 <script>
 import axios from 'axios'
 import Phone from './Phone.vue'
+import municipios_data from '../assets/estados_municipios.json'
 
 export default {
   name: 'Donors',
@@ -13,43 +14,22 @@ export default {
   data() {
     return {
       donors: {},
-      phones: {}
+      states: municipios_data,
+      municipios: {}
     }
   },
   mounted() {
     this.getDonor()
-    this.getPhones()
   },
   methods: {
-    deletePhone(idPhone){
-      try {
-        axios.delete('http://localhost:3000/phone/' + idPhone)
-        .then(response => {
-          console.log(response)
-        })
-      } catch (error) {
-        console.log(error)
-      }
+    getMunicipios(state){
+      this.municipios = this.states[state]
     },
     getDonor() {
       try{
         axios.get('http://localhost:3000/donor/' + this.idDonor)
         .then(response => {
           this.donors = response.data
-          // console.log(this.donors)
-          // console.log(this.idDonor)
-        })
-      } catch (error) {
-        console.log(error)
-      }
-    },
-    getPhones() {
-      try{
-        axios.get('http://localhost:3000/phone/' + this.idDonor)
-        .then(response => {
-          this.phones = response.data
-          console.log(this.phones)
-          // console.log(this.idDonor)
         })
       } catch (error) {
         console.log(error)
@@ -99,7 +79,7 @@ export default {
   },
   components: {
     Phone
-  }
+}
 }
 </script>
 
@@ -107,8 +87,10 @@ export default {
   <h1>Editar usuario</h1>
   <div class="container">
     <div class="row">
-      <div class="col-6">
-        <h2 class="text-center">Informaci&oacute;n</h2>
+      <div class="col-2"></div>
+      <div class="col-8">
+        <h2 class="text-center">Informaci&oacute;n b&aacute;sica</h2>
+        
         <form>
           <div v-for="donor in donors" :key="donor.donor_id">
             <label for="name" class="form-label">Nombre</label>
@@ -137,28 +119,21 @@ export default {
           </div>
         </form>
       </div>
-      <div class="col-6">
-        <h2 class="text-center">Tel&eacute;fonos</h2>
+      <div class="col-2"></div>
+    </div>
+    <div class="row">
+      <div class="col-2"></div>
+      <div class="col-8">
+        <h2 class="text-center">Tel&eacute;fonos registrados</h2>
         <div v-for="donor in donors" :key="donor.donor_id">
           <Phone :idDonor=donor.donor_id />
         </div>
-        <!-- <form class="limited-form" method="post">
-          <div v-for= "(phone, index) in phones" :key="phone.phone_id">
-            <label for="phone" class="form-label">Tel&eacute;fono {{index + 1}}</label>
-            <div class="input-group">
-              <input class="form-control mb-3" type="text" name="phone" id="phone" :value="phone.donor_phone">
-              <button class="btn btn-outline-secondary delete-form" type="button" name="id" :id="phone.phone_id" @click="deleteAlert(phone.phone_id)"><img src="../assets/trash.png" title="deleteImage" width="16" height="16"/></button>
-            </div>
-          </div>
-          <div class="d-grid">
-            <button type="button" class="btn btn-outline-success d-inline-block" data-bs-toggle="modal" data-bs-target="#exampleModal">+</button>
-          </div>
-        </form> -->
       </div>
+      <div class="col-2"></div>
     </div>
     <div class="row d-flex">
-      <div class="col-6"></div>
-      <div class="col-6">
+      <div class="col-2"></div>
+      <div class="col-8">
         <h2 class="text-center">Productos</h2>
         <form class="limited-form">
           <label for="product" class="form-label">Producto</label>
@@ -173,7 +148,22 @@ export default {
           <input class="form-control mb-3" type="text" name="description" id="description">
         </form>
       </div>
+      <div class="col-2"></div>
     </div>
+
+
+    <!-- <ul>
+      <li v-for="(estado, i) in states" :key="i">
+        {{estado.Estado}}
+        <ul>
+          <li v-for="(municipio, j) in states[i].Municipios" :key="j">
+            {{municipio}}
+          </li>
+        </ul>
+      </li>
+    </ul> -->
+
+    
     <div class="row">
         <div class="text-center">
           <button class="btn btn-success m-2" @click="confirmAlert()">Guardar</button>   

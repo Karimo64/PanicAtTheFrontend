@@ -113,9 +113,10 @@ export default{
     addPhone(){
       event.preventDefault() // prevent form submit
       try {
-            axios.post('http://localhost:3000/phone/' + this.idDonor, {
-              id: this.idDonor,
-              phone: document.getElementById('addPhoneNumber').value
+            axios.post('http://localhost:3000/phone/' + this.idDonor, {}, {
+              params: {
+                phone: document.getElementById('addPhoneNumber').value
+              }
             })
             .then(response => {
               console.log(response)

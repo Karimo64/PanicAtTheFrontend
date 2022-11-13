@@ -9,7 +9,7 @@ import Donor from '../components/Donor.vue'
       <table style="width:100%">
         <thead>
           <tr>
-            <th>Id</th>
+            <!-- <th>Id</th> -->
             <th>Nombre</th>
             <th>Ciudad</th>
             <th>Organizaci&oacute;n/Gremio</th>

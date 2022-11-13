@@ -65,7 +65,7 @@ export default {
 <template>
   <tr v-for="donor in donors" :key="donor.donor_id">
     <div hidden ></div>
-    <td>{{ donor.donor_id }}</td>
+    <!-- <td>{{ donor.donor_id }}</td> -->
     <td>{{ donor.donor_name }}</td>
     <td>{{ donor.donor_city }}</td>
     <td>{{ donor.donor_organization }}</td>

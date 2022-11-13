@@ -178,9 +178,6 @@ export default {
           </router-link>       
         </div>
       </div>
-    <div class="row">
-      <ejs-dropdownlist id='dropdownlist' placeholder='Select a game' :dataSource='municipios_data' ></ejs-dropdownlist>
-    </div>
   </div>
 
 
